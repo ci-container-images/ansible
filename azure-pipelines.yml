@@ -1,0 +1,22 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: Docker@2
+    displayName: "Login docker registry"
+    inputs:
+       command: login
+       containerRegistry: quay.io
+
+  - task: Docker@2
+    displayName: "Build and push ansible docker image"
+    inputs:
+      Dockerfile: "**/v2.9.3/Dockerfile"
+      command: buildAndPush
+      repository: ci-container-images/ansible
+      tags: |
+        v2.9.3
+
